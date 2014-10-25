@@ -1,0 +1,5 @@
+#!/bin/bash
+    for f in `ls *.eps`; do
+         convert -density 300 $f -flatten -trim ${f%.*}_t.png;
+    done 
+

@@ -1,0 +1,10 @@
+#!/usr/bin/expect -f
+set timeout 30
+set file [lindex $argv 0]
+# upload file to name
+spawn scp -r $file name@255.255.255.255:~/rex
+expect "password:"
+send "password\r"
+expect "]*"
+exit
+interact

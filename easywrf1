@@ -1,0 +1,37 @@
+#!/bin/bash
+
+
+
+########################################
+#WPS
+########################################
+
+cd /snfs01/zy/workspace1/WPS/
+#clean up
+rm met_* FILE* GRIB* geo_*
+#geogrid
+/snfs01/zy/workspace1/WPS/geogrid.exe
+#ungrib
+ln -sf /snfs01/zy/workspace1/WPS/ungrib/Variable_Tables/Vtable.GFS Vtable
+/snfs01/zy/workspace1/WPS/link_grib.csh `cat /snfs01/zy/project/data/fnl/link_list`
+/snfs01/zy/workspace1/WPS/ungrib.exe | tee ungrib.log|grep '^I'
+#metgrid
+/snfs01/zy/workspace1/WPS/metgrid.exe | tee metgrid.log
+
+
+
+
+########################################
+#WRFV3
+########################################
+
+cd /snfs01/zy/workspace1/WRFV3/test/em_real/
+#clean up
+rm met_* rsl.* wrfbdy* wrfinput* wrfout*
+#real
+ln -sf /snfs01/zy/workspace1/WPS/met_* /snfs01/zy/workspace1/WRFV3/test/em_real/
+/snfs01/zy/workspace1/WRFV3/test/em_real/real.exe && csh move.csh
+
+#wrf
+
+
