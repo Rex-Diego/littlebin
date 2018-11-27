@@ -1,0 +1,16 @@
+#!/usr/bin/expect -f
+set timeout 1
+puts "---1---"
+for {set i 1} {$i < 256} {incr i} {
+    puts "I inside first loop: $i"
+    spawn ssh rex@172.19.247.$i 
+    wait -nowait
+    expect {
+        "*refused*" {send "\r";wait -nowait}
+        "(yes/no)" {send "yes\r";wait -nowait; exp_continue}
+        "password:" {send "\r";wait -nowait}
+    }
+    wait -nowait
+}
+wait -nowait
+interact

@@ -1,0 +1,14 @@
+#!/usr/bin/expect -f
+set timeout 300
+set file [lindex $argv 0]
+spawn ssh root@149.28.115.195 
+expect "password:"
+send "\$9N\]3\$HE%,GC\r"
+expect "*root*"
+send "./ssr.sh\r"
+sleep 1
+send "6\r"
+sleep 1
+send "2\r"
+# send "exit\r"
+interact

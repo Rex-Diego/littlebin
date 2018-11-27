@@ -1,0 +1,7 @@
+#!/bin/bash
+file=$1
+echo $file
+echo ${file%.*}
+screen -dmS ${file%.*} & 
+sleep 2
+screen -S  ${file%.*} -X screen ncl $file

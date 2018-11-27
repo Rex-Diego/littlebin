@@ -1,0 +1,30 @@
+#!/bin/bash
+echo "
+origlineData=load(origin_data_path);
+
+%delete([origin_data_path,'_C*'])
+
+%test the IMF numbers
+
+%do EEMD for each line
+for i=1:nline
+	lineData=origlineData(i,:);
+	rslt=ceemdan(lineData,0.2,100,5000,1);
+	dimOfTest=size(rslt);
+	imfNumber=dimOfTest(1);
+	
+	for j=1:imfNumber
+		imf=rslt(j,:)
+		save([origin_data_path,'_C',num2str(j)],'imf','-ascii','-append')
+	end
+	save([origin_data_path,'_Clog'],'i','-ascii')
+	save([origin_data_path,'_Clog'],'nline','-ascii','-append')
+end
+
+clear
+exit
+">rex_new.m
+
+matlab -nodisplay -r "origin_data_path='./$1';colum=`head -1 $1|wc -w`;nline=`cat $1|wc -l`;rex_new"
+
+rm -f rex_new.m

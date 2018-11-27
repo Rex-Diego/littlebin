@@ -1,0 +1,23 @@
+#!/bin/bash
+echo "
+origlineData=load(origin_data_path);
+addpath('~/soft/MATLAB/toolbox/eemd/')
+
+delete([origin_data_path,'_omega'])
+
+%calc the instantous frequency for each line
+for i=1:nline
+	lineData=origlineData(i,:);
+	rslt=ifndq(lineData,1);
+	save([origin_data_path,'_omega'],'rslt','-ascii','-append')
+	save([origin_data_path,'_Omegalog'],'i','-ascii')
+	save([origin_data_path,'_Omegalog'],'nline','-ascii','-append')
+end
+
+clear
+exit
+">rex_calc_omega.m
+
+matlab -nodisplay -r "origin_data_path='./$1';colum=`head -1 $1|wc -w`;nline=`cat $1|wc -l`;rex_calc_omega"
+
+rm -f rex_calc_omega.m
